@@ -35,7 +35,8 @@ function getToday(){
 function currTime()
 {
     var d = new Date()
-    var currTime = d.getHours() + ":" + d.getMinutes()
+    function pad(s) { return (s < 10) ? '0' + s : s; }
+    var currTime = pad(d.getHours()) + ":" + pad(d.getMinutes())
     return currTime
 }
 export default function AppointmentForm(props){
@@ -48,7 +49,6 @@ export default function AppointmentForm(props){
     const [validated, setValidated] = React.useState(false);
 
     const handleSubmit = (event) => {
-        console.log(currTime())
         const form = event.currentTarget;
         if (form.checkValidity() === false) {
             event.preventDefault();
