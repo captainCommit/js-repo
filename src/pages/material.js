@@ -1,7 +1,7 @@
 import React,{Component} from 'react'
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography'
-
+import MaterialTable from 'material-table'
 
 
 export default class Material extends Component{
@@ -10,10 +10,14 @@ export default class Material extends Component{
         super(props)
         this.state = {app : Appointments}
     }
+    onRowAdd = (newData)=>{
+        var temp = [...this.state.app]
+        temp.push(newData)
+    }
     render()
     {
         return(
-            <Paper className="App">
+            <Paper className="App" elevation={3}>
                 <Typography variant="h3" gutterBottom>Appointments</Typography>
             </Paper>
         )
