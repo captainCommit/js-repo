@@ -13,6 +13,18 @@ export default class Material extends Component{
     onRowAdd = (newData)=>{
         var temp = [...this.state.app]
         temp.push(newData)
+        this.setState({app:temp})
+    }
+    onRowUpdate = (newData,oldData)=>{
+        var temp = [...this.state.app]
+        temp[temp.indexOf(oldData)] = newData
+        this.setState({app : temp})
+    }
+    onRowRemove = (newData)=>{
+        var temp = [...this.state.app]
+        const i = temp.indexOf(newData)
+        temp.splice(i,1)
+        this.setState({app:temp})
     }
     render()
     {
