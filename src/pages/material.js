@@ -163,7 +163,7 @@ export default class EnhancedTable extends Component{
     constructor(props)
     {
         super(props)
-        this.state = {app : Appointments,order:'asc',orderBy:'name',selected:"",page:0,rowsPerPage:5,emptyRows:0,open:false}  
+        this.state = {app : Appointments,order:'asc',orderBy:'name',selected:"",page:0,rowsPerPage:5,emptyRows:0,open:false,selectedObject : null}  
         this.setOrder = this.setOrder.bind(this)      
         this.setOrderBy = this.setOrderBy.bind(this)
         this.setSelected = this.setSelected.bind(this)
@@ -207,9 +207,11 @@ export default class EnhancedTable extends Component{
     };
     handleClick = (evt,name)=>{
         if(name === this.state.selected)
-            this.setState({selected : ""})
+            this.setState({selected : "",selectedObject:null})
         else{
-            this.setState({selected:name})
+            const temp = [...this.state.app]
+            const obj = temp[temp.findIndex(e=>e.name === name)]
+            this.setState({selected:name,selectedObject : obj})
         }
     }
     handleDelete = (event)=>{
@@ -218,11 +220,12 @@ export default class EnhancedTable extends Component{
         temp.splice(i,1)
         this.setState({app : temp})
     }
-    handleUpdate = (event)=>{
+    handleUpdate = (newData)=>{
         const temp = [...this.state.app]
         const i = temp.findIndex(e=>e.name === this.state.selected)
-        const obj = temp[i]
-        console.log(obj)
+        console.log(newData,i)
+        //temp[i] = newData
+        //console.log(obj)
     }
     isSelected = (name)=>{
         return name === this.state.selected
@@ -255,7 +258,7 @@ export default class EnhancedTable extends Component{
             </Paper>
             <Modal style={{display: 'flex',alignItems: 'center',justifyContent: 'center',}}aria-labelledby="transition-modal-title" aria-describedby="transition-modal-description" open={this.state.open} onClose={this.handleClose} closeAfterTransition BackdropComponent={Backdrop} BackdropProps={{ timeout: 500, }}>
                 <Fade in={this.state.open}>
-                    <ModalUpdate/>
+                    <ModalUpdate name={this.state.selected} id={this.state.selectedObject ? this.state.selectedObject.id : null} doctor={this.state.selectedObject ? this.state.selectedObject.doctor : null} time={this.state.selectedObject ? this.state.selectedObject.time : null} date={this.state.selectedObject ? this.state.selectedObject.date : null} submit={this.handleUpdate}/>
                 </Fade>
             </Modal>
         </div>
@@ -275,28 +278,28 @@ const Appointments = [
     {
         "id": "3069447210",
         "name": "Naomi Rivas",
-        "date": "16-11-2020",
+        "date": "11-21-2020",
         "time": "07:30 PM",
         "doctor": "Tamara Rivera"
     },
     {
         "id": "2296400716",
         "name": "Reed Mcgowan",
-        "date": "17-11-2019",
+        "date": "10-19-2019",
         "time": "07:30 PM",
         "doctor": "Eugenia Eaton"
     },
     {
         "id": "1935204474",
         "name": "Jescie Potts",
-        "date": "23-03-2021",
+        "date": "03-23-2021",
         "time": "07:30 PM",
         "doctor": "Hadley Morrow"
     },
     {
         "id": "6620700434",
         "name": "Cullen Wilkerson",
-        "date": "27-03-2020",
+        "date": "07-23-2020",
         "time": "07:30 PM",
         "doctor": "Jaquelyn Santos"
     },
@@ -310,28 +313,28 @@ const Appointments = [
     {
         "id": "7992690895",
         "name": "Kristen William",
-        "date": "30-03-2020",
+        "date": "10-23-2020",
         "time": "11:30 AM",
         "doctor": "Rowan Riggs"
     },
     {
         "id": "4874968261",
         "name": "Illana Dejesus",
-        "date": "05-03-2021",
+        "date": "05-13-2021",
         "time": "07:30 PM",
         "doctor": "Imelda Mooney"
     },
     {
         "id": "9244263715",
         "name": "Beau Knox",
-        "date": "09-05-2019",
+        "date": "09-15-2019",
         "time": "07:30 PM",
         "doctor": "Lacy Morales"
     },
     {
         "id": "2253177407",
         "name": "Devin Ayala",
-        "date": "28-12-2019",
+        "date": "08-20-2019",
         "time": "07:30 PM",
         "doctor": "Abel Strong"
     }

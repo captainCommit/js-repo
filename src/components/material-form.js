@@ -7,18 +7,31 @@ import Alert from '@material-ui/lab/Alert';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
+import {MuiPickersUtilsProvider,KeyboardTimePicker,KeyboardDatePicker} from '@material-ui/pickers';
+import MomentUtils from '@date-io/moment';
+
 const theme = createMuiTheme({
     spacing: 4,
 });
+function convertDate(inputFormat) {
+    function pad(s) { return (s < 10) ? '0' + s : s; }
+    var d = new Date(inputFormat)
+    return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('-')
+}
 export default class ModalUpdate extends Component{
     constructor(props)
     {
-        super();
+        super(props);
         this.state = {
-                date: '',
+                id : props.id,
+                submit : props.submit,
+                name : props.name,
+                doctor : props.doctor,
+                date: props.date,
                 dateError: false,
                 dateErrorMessage:'',
-                time:'',
+                time: new Date(props.date+" "+props.time),
+                aTime : props.time,
                 timeError:false,
                 timeErrorMessage:'',
                 status:null,
@@ -27,13 +40,12 @@ export default class ModalUpdate extends Component{
             this.handleTimeChange = this.handleTimeChange.bind(this);
             this.handleSubmit = this.handleSubmit.bind(this);
     }
-    handleDateChange(event) {
-        event.preventDefault();
-        this.setState({date : event.target.value});
+    handleDateChange(date) {
+        this.setState({date : date});
     }
-    handleTimeChange(event) {
-        event.preventDefault();
-        this.setState({time : event.target.value});
+    handleTimeChange(time) {
+        const t = new Date(this.state.date+" "+this.state.time)
+        this.setState({time : t,aTime : t.format('h:mm a')});
     }
     async handleSubmit(event){
         event.preventDefault();
@@ -47,8 +59,8 @@ export default class ModalUpdate extends Component{
         }
         else
         {
-            const obj = {date : this.state.date,time : this.state.time}
-            console.log(obj)
+            const newData = {id : this.state.id,name:this.state.name,doctor:this.state.doctor,date : this.state.date,time : this.state.time}
+            this.state.submit(this.state.name,newData)
         }
     }
     render()
@@ -70,22 +82,28 @@ export default class ModalUpdate extends Component{
                             <Typography variant="h4" gutterBottom style={{marginBottom:30}}>Update Appointments</Typography>
                             <Grid container spacing = {2}>
                                 <Grid item xs = {4}>
-                                    <TextField InputProps={{readOnly: true,}} label="ID" variant="outlined" fullWidth style={{marginBottom: 20,marginRight:20}} defaultValue="Appointment ID"/>
+                                    <TextField InputProps={{readOnly: true,}} label="ID" variant="outlined" fullWidth style={{marginBottom: 20,marginRight:20}} defaultValue={this.state.id}/>
                                 </Grid>
                                 <Grid items xs = {4}>
-                                    <TextField InputProps={{readOnly: true,}} label="Name" variant="outlined" fullWidth style={{marginRight:20,marginTop:10}} defaultValue="Patient Name"/>
+                                    <TextField InputProps={{readOnly: true,}} label="Name" variant="outlined" fullWidth style={{marginRight:20,marginTop:10}} defaultValue={this.state.name}/>
                                 </Grid>
                                 <Grid item xs = {4}>
-                                    <TextField InputProps={{readOnly: true,}} label="Doctor" variant="outlined" fullWidth style={{marginBottom: 20,marginRight:20}} defaultValue="Doctors Name"/>
+                                    <TextField InputProps={{readOnly: true,}} label="Doctor" variant="outlined" fullWidth style={{marginBottom: 20,marginRight:20}} defaultValue={this.state.doctor}/>
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <TextField error={this.state.dateError} data-testid="username" required label="Date" variant="outlined" fullWidth style={{marginBottom: 20,marginRight:20}} helperText={this.state.dateErrorMessage} onChange={this.handleDateChange}/>
+                                    <MuiPickersUtilsProvider utils={MomentUtils}>
+                                        <KeyboardDatePicker disableToolbar format="DD-MM-yyyy" margin="none" id="date-picker" label="Date picker" value={this.state.date} onChange={this.handleDateChange} KeyboardButtonProps={{     'aria-label': 'change date', }} />
+                                    </MuiPickersUtilsProvider>
+                                    {/*<TextField error={this.state.dateError} data-testid="=date" required label="Date" variant="outlined" fullWidth style={{marginBottom: 20,marginRight:20}} value={this.state.date} helperText={this.state.dateErrorMessage} onChange={this.handleDateChange}/ > */}
                                 </Grid>
                                 <Grid item xs={6}>
-                                    <TextField error={this.state.timeError} data-testid="password" required label="Time" type="password" fullWidth style={{marginBottom: 20}} autoComplete="current-password" helperText={this.state.timeErrorMessage} variant="outlined" onChange={this.handleTimeChange}/>
+                                    <MuiPickersUtilsProvider utils={MomentUtils}>
+                                    <KeyboardTimePicker margin="none" id="time-picker" label="Time" value={this.state.time} onChange={this.handleTimeChange} KeyboardButtonProps={{   'aria-label': 'change time', }}/>
+                                    </MuiPickersUtilsProvider>
+                                    {/*<TextField error={this.state.timeError} data-testid="time" required label="Time"  fullWidth style={{marginBottom: 20}} autoComplete="current-date" value={this.state.time} helperText={this.state.timeErrorMessage} variant="outlined" onChange={this.handleTimeChange}/>*/}
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Button data-testid="submitbutton" variant="contained" size="large" startIcon={<CloudUploadIcon/>} color="primary" onClick={this.handleSubmit}>Login</Button>
+                                    <Button data-testid="submitbutton" variant="contained" size="large" startIcon={<CloudUploadIcon/>} color="primary" onClick={this.handleSubmit}>Update Appointment</Button>
                                 </Grid>
                                 <Grid item xs>
                                     {this.state.status === null?null:this.state.status === false ? <Alert severity="error" style={{marginTop:10}}>Unsuccessful Update</Alert>: <Alert severity="success" style={{marginTop:10}}>Update Successful</Alert> }
