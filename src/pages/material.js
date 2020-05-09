@@ -255,9 +255,7 @@ export default class EnhancedTable extends Component{
             </Paper>
             <Modal style={{display: 'flex',alignItems: 'center',justifyContent: 'center',}}aria-labelledby="transition-modal-title" aria-describedby="transition-modal-description" open={this.state.open} onClose={this.handleClose} closeAfterTransition BackdropComponent={Backdrop} BackdropProps={{ timeout: 500, }}>
                 <Fade in={this.state.open}>
-                <div style={{border: '2px solid #000', padding:10,boxShadow:"10px 10px 5px 0px rgba(0,0,0,0.75)",backgroundColor:"#ffffff"}}>
-                    <
-                </div>
+                    <ModalUpdate/>
                 </Fade>
             </Modal>
         </div>
