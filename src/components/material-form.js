@@ -34,7 +34,7 @@ export default class ModalUpdate extends Component{
                 name : props.name,
                 doctor : props.doctor,
                 submit : props.submit,
-                date: props.date,
+                date:moment(new Date(props.date+" "+props.time)),
                 dateError: false,
                 dateErrorMessage:'',
                 time: moment(new Date(props.date+" "+props.time)),
@@ -66,7 +66,7 @@ export default class ModalUpdate extends Component{
         }
         else
         {
-            const newData = {id : this.state.id,name:this.state.name,doctor:this.state.doctor,date : this.state.date,time : this.state.time.format('hh:mm a')}
+            const newData = {id : this.state.id,name:this.state.name,doctor:this.state.doctor,date : this.state.date.format('DD-MM-YYYY'),time : this.state.time.format('hh:mm a')}
             this.state.submit(newData)
         }
     }

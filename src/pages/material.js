@@ -224,8 +224,8 @@ export default class EnhancedTable extends Component{
         const temp = [...this.state.app]
         const i = temp.findIndex(e=>e.name === this.state.selected)
         console.log(newData,i)
-        //temp[i] = newData
-        //console.log(obj)
+        temp[i] = newData
+        this.setState({app : temp})
     }
     isSelected = (name)=>{
         return name === this.state.selected
