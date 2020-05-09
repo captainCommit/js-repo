@@ -121,8 +121,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const { numSelected } = props;
-
+  const numSelected  = props.numSelected;
   return (
     <Toolbar className={clsx(classes.root)}>
       {numSelected > 0 ? (
@@ -133,12 +132,12 @@ const EnhancedTableToolbar = (props) => {
                 </Typography>
             </Grid>
             <Grid item xs={1}>
-                <IconButton aria-label="delete" >
+                <IconButton aria-label="delete" onClick={props.delete}>
                     <DeleteIcon/>
                 </IconButton>
             </Grid>
             <Grid item xs={1}>
-                <IconButton aria-label="delete">
+                <IconButton aria-label="delete" onClick={props.update}>
                     <EditIcon/>
                 </IconButton>
             </Grid>
@@ -214,11 +213,24 @@ const handleClick = (event, name) => {
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, Appointments.length - page * rowsPerPage);
-
+  const handleDelete = (event)=>{
+      event.preventDefault()
+      const i = Appointments.findIndex(e => e.name === selected)
+      console.log(i)
+      console.log(Appointments[i])
+  }
+  const handleUpdate = (event)=>{
+      event.preventDefault()
+      const i = Appointments.findIndex(e => e.name === selected)
+      console.log(i)
+      console.log("Update : ")
+      console.log(Appointments[i])
+      //console.log("Update : "+selected)
+  }
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected === "" ? 0:1} />
+        <EnhancedTableToolbar numSelected={selected === "" ? 0:1} delete={handleDelete} update={handleUpdate}/>
         <TableContainer>
           <Table
             className={classes.table}
