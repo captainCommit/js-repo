@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
@@ -182,14 +182,34 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable() {
+export default class EnhancedTable extends Component{
+
+    constructor(props)
+    {
+        super(props)
+        this.state = {
+            app : Appointments,
+            order : 'asc',
+            classes : useStyles(),
+            orderBy : 'name',
+            selected:'',page:0,
+            rowsPerPage : 5
+        }
+        this.setOrder = this.setOrder.bind(this)
+        this.setOrderBy = this.setOrderBy.bind(this)
+    }
   const classes = useStyles();
-  const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState("");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
+  setOrder = (ord)=>{
+    this.setState({order : ord})
+  }
+  setOrderBy = (ob)=>{
+      this.setState({orderBy : ob})
+  }
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -216,15 +236,13 @@ const handleClick = (event, name) => {
   const handleDelete = (event)=>{
       event.preventDefault()
       const i = Appointments.findIndex(e => e.name === selected)
-      console.log(i)
-      console.log(Appointments[i])
+      Appointments.splice(i,1)
+      console.log(Appointments)
   }
   const handleUpdate = (event)=>{
       event.preventDefault()
       const i = Appointments.findIndex(e => e.name === selected)
-      console.log(i)
-      console.log("Update : ")
-      console.log(Appointments[i])
+
       //console.log("Update : "+selected)
   }
   return (
@@ -288,7 +306,7 @@ const handleClick = (event, name) => {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[10, 25]}
+          rowsPerPageOptions={[5,10,25]}
           component="div"
           count={Appointments.length}
           rowsPerPage={rowsPerPage}
