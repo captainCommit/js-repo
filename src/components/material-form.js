@@ -22,7 +22,7 @@ function formatAMPM(date) {
     minutes = minutes < 10 ? '0'+minutes : minutes;
     var strTime = hours + ':' + minutes + ' ' + ampm;
     return strTime;
-  }
+}
 export default class ModalUpdate extends Component{
     constructor(props)
     {
@@ -49,8 +49,7 @@ export default class ModalUpdate extends Component{
         this.setState({date : date});
     }
     handleTimeChange(time) {
-        const t = new Date(this.state.date+" "+this.state.time)
-        this.setState({time : t,aTime : t.format('h:mm a')});
+        this.setState({time : time});
     }
     async handleSubmit(event){
         event.preventDefault();
@@ -64,8 +63,8 @@ export default class ModalUpdate extends Component{
         }
         else
         {
-            const newData = {id : this.state.id,name:this.state.name,doctor:this.state.doctor,date : this.state.date,time : this.state.aTime}
-            this.state.submit(this.state.name,newData)
+            const newData = {id : this.state.id,name:this.state.name,doctor:this.state.doctor,date : this.state.date,time : this.state.time.format('hh:mm a')}
+            console.log(newData)
         }
     }
     render()
