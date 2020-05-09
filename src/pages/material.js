@@ -123,21 +123,11 @@ const EnhancedTableToolbar = (props) => {
   const { numSelected } = props;
 
   return (
-    <Toolbar
-      className={clsx(classes.root, {
-        [classes.highlight]: numSelected > 0,
-      })}
+    <Toolbar className={clsx(classes.root)}
     >
-      {numSelected > 0 ? (
-        <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
-          {numSelected} selected
-        </Typography>
-      ) : (
         <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
           Appointments
         </Typography>
-      )}
-
       {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton aria-label="delete">
@@ -181,7 +171,7 @@ export default function EnhancedTable() {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
-  const [selected, setSelected] = React.useState([]);
+  const [selected, setSelected] = React.useState("");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(8);
 
@@ -191,25 +181,8 @@ export default function EnhancedTable() {
     setOrderBy(property);
   };
 const handleClick = (event, name) => {
-    console.log(event.target)
-    const selectedIndex = selected.indexOf(name);
-    //console.log(selected)
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-    console.log(newSelected)
-    setSelected(newSelected);
+    console.log(name)
+    setSelected(name)
   };
 
   const handleChangePage = (event, newPage) => {
@@ -227,7 +200,7 @@ const handleClick = (event, name) => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar numSelected={selected === "" ? 0:1} />
         <TableContainer>
           <Table
             className={classes.table}
