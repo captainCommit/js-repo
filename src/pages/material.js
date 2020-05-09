@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
+import EditIcon from '@material-ui/icons/Add';
+import Grid from '@material-ui/core/Grid';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -14,8 +16,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete';
 
 function descendingComparator(a, b, orderBy) {
@@ -123,18 +124,33 @@ const EnhancedTableToolbar = (props) => {
   const { numSelected } = props;
 
   return (
-    <Toolbar className={clsx(classes.root)}
-    >
-        <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-          Appointments
-        </Typography>
+    <Toolbar className={clsx(classes.root)}>
       {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton aria-label="delete">
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (null)}
+        <Grid container spacing={0}>
+            <Grid item xs ={10}>
+                <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+                    Appointments
+                </Typography>
+            </Grid>
+            <Grid item xs={1}>
+                <IconButton aria-label="delete" >
+                    <DeleteIcon/>
+                </IconButton>
+            </Grid>
+            <Grid item xs={1}>
+                <IconButton aria-label="delete">
+                    <EditIcon/>
+                </IconButton>
+            </Grid>
+        </Grid>
+      ) : (<Grid container spacing={1} direction="row" alignItems="flex-end">
+            <Grid item xs>
+                <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+                    Appointments
+                </Typography>
+            </Grid>
+            </Grid>
+            )}
     </Toolbar>
   );
 };
@@ -173,7 +189,7 @@ export default function EnhancedTable() {
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState("");
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(8);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -181,8 +197,10 @@ export default function EnhancedTable() {
     setOrderBy(property);
   };
 const handleClick = (event, name) => {
-    console.log(name)
-    setSelected(name)
+    if(selected === name)
+        setSelected("")
+    else
+        setSelected(name)
   };
 
   const handleChangePage = (event, newPage) => {
@@ -258,7 +276,7 @@ const handleClick = (event, name) => {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[8, 10, 25]}
+          rowsPerPageOptions={[10, 25]}
           component="div"
           count={Appointments.length}
           rowsPerPage={rowsPerPage}
