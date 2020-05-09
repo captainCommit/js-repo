@@ -1,8 +1,1 @@
-react-bootstrap
-bootstrap
-react-router-dom
-react-icons
-@material-ui/core
-@material-ui/lab
-@materila-ui/icons
-react-table
+npm i --save react-bootstrap bootstrap react-router-dom react-icons @material-ui/core @material-ui/lab @material-ui/icons material-table
