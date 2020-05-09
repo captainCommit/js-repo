@@ -20,6 +20,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 import ModalUpdate from '../components/material-form'
 
 function descendingComparator(a, b, orderBy) {
@@ -129,7 +131,7 @@ const EnhancedTableToolbar = (props) => {
       {numSelected > 0 ? (
         <Grid container spacing={0}>
             <Grid item xs ={11}>
-                <Typography className={classes.title} variant="h3" id="tableTitle" component="div">
+                <Typography className={classes.title} variant="h3" id="tableTitle" component="div" >
                     Appointments
                 </Typography>
             </Grid>
@@ -218,11 +220,16 @@ export default class EnhancedTable extends Component{
         const temp = [...this.state.app]
         const i = temp.findIndex(e=>e.name === this.state.selected)
         temp.splice(i,1)
-        this.setState({app : temp})
+        this.setState({app : temp,selected:""})
     }
     handleUpdate = (newData)=>{
         const temp = [...this.state.app]
         const i = temp.findIndex(e=>e.name === this.state.selected)
+        if(i == -1)
+        {
+          alert("Record Not Found")
+          this.setState({open:false})
+        }
         console.log(newData,i)
         temp[i] = newData
         this.setState({app : temp})
@@ -255,6 +262,9 @@ export default class EnhancedTable extends Component{
                         </TableBody>
                     </Table>
                 </TableContainer>
+                <Fab color="secondary" aria-label="add" style={{position : "fixed",bottom : 20,right:5}}>
+                  <AddIcon />
+                </Fab>
             </Paper>
             <Modal style={{display: 'flex',alignItems: 'center',justifyContent: 'center',}}aria-labelledby="transition-modal-title" aria-describedby="transition-modal-description" open={this.state.open} onClose={this.handleClose} closeAfterTransition BackdropComponent={Backdrop} BackdropProps={{ timeout: 500, }}>
                 <Fade in={this.state.open}>
@@ -337,5 +347,47 @@ const Appointments = [
         "date": "08-20-2019",
         "time": "07:30 PM",
         "doctor": "Abel Strong"
+    },
+    {
+      "id": "7962799797",
+      "name": "Aristotle Snyder",
+      "date": "29-07-2019",
+      "time": "11:30 AM",
+      "doctor": "Wade Sandoval"
+    },
+    {
+      "id": "6848505587",
+      "name": "Ray Diaz",
+      "date": "12-12-2020",
+      "time": "07:30 PM",
+      "doctor": "Davis Hartman"
+    },
+    {
+      "id": "7253188593",
+      "name": "Adara Hinton",
+      "date": "12-05-2019",
+      "time": "11:30 AM",
+      "doctor": "Caleb Kirkland"
+    },
+    {
+      "id": "8676547602",
+      "name": "Rafael Vargas",
+      "date": "10-12-2020",
+      "time": "07:30 PM",
+      "doctor": "Hall Russell"
+    },
+    {
+      "id": "4554097288",
+      "name": "Addison Shelton",
+      "date": "07-02-2021",
+      "time": "11:30 AM",
+      "doctor": "Paki Mcdowell"
+    },
+    {
+      "id": "5612272406",
+      "name": "Allen Pacheco",
+      "date": "01-04-2021",
+      "time": "07:30 PM",
+      "doctor": "Gavin Burns"
     }
 ]
