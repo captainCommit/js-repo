@@ -13,11 +13,16 @@ import MomentUtils from '@date-io/moment';
 const theme = createMuiTheme({
     spacing: 4,
 });
-function convertDate(inputFormat) {
-    function pad(s) { return (s < 10) ? '0' + s : s; }
-    var d = new Date(inputFormat)
-    return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('-')
-}
+function formatAMPM(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+  }
 export default class ModalUpdate extends Component{
     constructor(props)
     {
@@ -59,7 +64,7 @@ export default class ModalUpdate extends Component{
         }
         else
         {
-            const newData = {id : this.state.id,name:this.state.name,doctor:this.state.doctor,date : this.state.date,time : this.state.time}
+            const newData = {id : this.state.id,name:this.state.name,doctor:this.state.doctor,date : this.state.date,time : this.state.aTime}
             this.state.submit(this.state.name,newData)
         }
     }
