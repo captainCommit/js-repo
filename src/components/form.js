@@ -1,8 +1,7 @@
 import React from 'react'
-import {Container,Row,Col} from 'react-bootstrap';
+import {Container,Col} from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import {FaPaperPlane} from 'react-icons/fa';
-import InputGroup from 'react-bootstrap/InputGroup'
 import Form from 'react-bootstrap/Form'
 function makeid(length) {
     var result           = '';
@@ -66,12 +65,6 @@ export default function AppointmentForm(props){
         }
         setValidated(true);
     };
-    const submit =()=>{
-        console.log(state.name.value)
-        console.log(state.doc.value)
-        console.log(state.date.value)
-        console.log(state.time.value)
-    }
     return(
     <div className="App">
         <Container fluid style={{background:"#fbfbf8",padding:10,borderRadius:5,maxWidth:"100%"}}>
