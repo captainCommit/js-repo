@@ -1,0 +1,117 @@
+const [data,setData] = React.useState(Appointments)
+    const [order, setOrder] = React.useState('asc');
+    const [orderBy, setOrderBy] = React.useState('calories');
+    const [selected, setSelected] = React.useState("");
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+    const handleRequestSort = (event, property) => {
+        const isAsc = orderBy === property && order === 'asc';
+        setOrder(isAsc ? 'desc' : 'asc');
+        setOrderBy(property);
+    };
+    const handleClick = (event, name) => {
+        if(selected === name)
+            setSelected("")
+        else
+            setSelected(name)
+    };
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(parseInt(event.target.value, 10));
+        setPage(0);
+    };
+    const isSelected = (name) => selected.indexOf(name) !== -1;
+
+    const emptyRows = rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
+
+    const handleDelete = (event)=>{
+        event.preventDefault()
+        const temp = data
+        const i = temp.findIndex(e => e.name === selected)
+        temp.splice(i,1)
+        setData(temp)
+        console.log(data)
+        console.log('delete')
+    }
+    const handleUpdate = (event)=>{
+        console.log('Update')
+        event.preventDefault()
+        const i = data.findIndex(e => e.name === selected)
+        //console.log("Update : "+selected)
+    }
+    return (
+        <div className="App">
+        <Paper>
+            <EnhancedTableToolbar numSelected={selected === "" ? 0:1} delete={handleDelete} update={handleUpdate}/>
+            <TableContainer>
+            <Table
+                style={{minWidth : 750}}
+                aria-labelledby="tableTitle"
+                size={'medium'}
+                aria-label="enhanced table"
+            >
+                <EnhancedTableHead
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onRequestSort={handleRequestSort}
+                rowCount={data.length}
+                />
+                <TableBody>
+                {stableSort(data, getComparator(order, orderBy))
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row, index) => {
+                    const isItemSelected = isSelected(row.name);
+                    const labelId = `enhanced-table-checkbox-${index}`;
+
+                    return (
+                        <TableRow
+                        hover
+                        onClick={(event) => handleClick(event, row.name)}
+                        role="checkbox"
+                        aria-checked={isItemSelected}
+                        tabIndex={-1}
+                        key={row.name}
+                        selected={isItemSelected}
+                        >
+                        <TableCell padding="checkbox">
+                            <Checkbox
+                            checked={isItemSelected}
+                            inputProps={{ 'aria-labelledby': labelId }}
+                            />
+                        </TableCell>
+                        <TableCell component="th" id={labelId} scope="row" padding="none">
+                            {row.Appointmentid}
+                        </TableCell>
+                        <TableCell align="left">{row.name}</TableCell>
+                        <TableCell align="left">{row.date}</TableCell>
+                        <TableCell align="left">{row.time}</TableCell>
+                        <TableCell align="left">{row.doctor}</TableCell>
+                        </TableRow>
+                    );
+                    })}
+                {emptyRows > 0 && (
+                    <TableRow style={{ height: (53) * emptyRows }}>
+                    <TableCell colSpan={6} />
+                    </TableRow>
+                )}
+                </TableBody>
+            </Table>
+            </TableContainer>
+            <TablePagination
+            rowsPerPageOptions={[5,10,25]}
+            component="div"
+            count={data.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+            />
+        </Paper>
+        </div>
+    );
