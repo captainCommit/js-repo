@@ -1,4 +1,4 @@
-import function,{Component} from 'react';
+import React,{Component} from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
@@ -162,9 +162,14 @@ export default class EnhancedTable extends Component{
     constructor(props)
     {
         super(props)
-        this.state = {app : Appointments,order:'asc',orderBy:'name',selected:"",page:0,rowsPerPage:0,emptyRows:0}  
+        this.state = {app : Appointments,order:'asc',orderBy:'name',selected:"",page:0,rowsPerPage:5,emptyRows:0}  
         this.setOrder = this.setOrder.bind(this)      
         this.setOrderBy = this.setOrderBy.bind(this)
+        this.setSelected = this.setSelected.bind(this)
+        this.setPage = this.setPage.bind(this)
+        this.setRowsPerPage = this.setRowsPerPage.bind(this)
+        this.setEmptyRows = this.setEmptyRows.bind(this)
+        this.handleRequestSort = this.handleRequestSort.bind(this)
     }
     setOrder = (o)=>{
         this.setState({order:o})
@@ -172,7 +177,65 @@ export default class EnhancedTable extends Component{
     setOrderBy = (o)=>{
         this.setState({orderBy:o})
     }
-    
+    setSelected = (s)=>{
+        this.setState({selected : s})
+    }
+    setPage = (p)=>{
+        this.setState({page : p})
+    }
+    setRowsPerPage = (r)=>{
+        this.setState({rowsPerPage : r})
+    }
+    setEmptyRows = (e)=>{
+        this.setState({emptyRows : this.state.rowsPerPage - Math.min(this.state.rowsPerPage, this.state.app.length - (this.state.page * this.state.rowsPerPage))})
+    }
+    handleRequestSort = (event, property) => {
+        const isAsc = this.state.orderBy === property && this.state.order === 'asc';
+        this.setOrder(isAsc ? 'desc' : 'asc');
+        this.setOrderBy(property);
+    };
+    handleDelete = (event)=>{
+        const temp = [...this.state.app]
+        const i = temp.findIndex(e=>e.name === this.state.selected)
+        this.setState({app : temp})
+        alert('Deleted Successfully')
+    }
+    handleUpdate = (event)=>{
+        const temp = [...this.state.app]
+        const i = temp.findIndex(e=>e.name === this.state.selected)
+        const obj = temp[i]
+        console.log(obj)
+    }
+    render()
+    {
+        return(
+            <div className="App">
+            <Paper>
+                <EnhancedTableToolbar numSelected={this.state.selected === "" ? 0:1} delete={this.handleDelete} update={this.handleUpdate}/>
+                <TableContainer>
+                    <Table style={{minWidth : 750}} aria-labelledby="tableTitle" size={'medium'} aria-label="enhanced table">
+                        <EnhancedTableHead numSelected={this.state.selected === ""?0:1} order={this.state.order} orderBy={this.state.orderBy} onRequestSort={handleRequestSort} rowCount={data.length} />
+                        <TableBody>
+                            {stableSort(this.state.app, getComparator(this.state.order, this.state.orderBy)).map((row, index) => {const isItemSelected = isSelected(row.name);const labelId = `enhanced-table-checkbox-${index}`;
+                                return (
+                                    <TableRow hover onClick={(event) => handleClick(event, row.name)} role="checkbox" aria-checked={isItemSelected} tabIndex={-1} key={row.name} selected={isItemSelected} >
+                                        <TableCell padding="checkbox"><Checkbox checked={isItemSelected} inputProps={{ 'aria-labelledby': labelId }} /></TableCell>
+                                        <TableCell component="th" id={labelId} scope="row" padding="none">{row.id}</TableCell>
+                                        <TableCell align="left">{row.name}</TableCell>
+                                        <TableCell align="left">{row.date}</TableCell>
+                                        <TableCell align="left">{row.time}</TableCell>
+                                        <TableCell align="left">{row.doctor}</TableCell>
+                                    </TableRow>
+                                    );
+                                })}
+                            {emptyRows > 0 && (<TableRow style={{ height: (53) * emptyRows }}><TableCell colSpan={6} /></TableRow>)}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            </Paper>
+        </div>
+        )
+    }
 }
 
 
