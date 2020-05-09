@@ -7,6 +7,7 @@ import Alert from '@material-ui/lab/Alert';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
+import moment from 'moment'
 import {MuiPickersUtilsProvider,KeyboardTimePicker,KeyboardDatePicker} from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
 
@@ -32,15 +33,17 @@ export default class ModalUpdate extends Component{
                 submit : props.submit,
                 name : props.name,
                 doctor : props.doctor,
+                submit : props.submit,
                 date: props.date,
                 dateError: false,
                 dateErrorMessage:'',
-                time: new Date(props.date+" "+props.time),
+                time: moment(new Date(props.date+" "+props.time)),
                 aTime : props.time,
                 timeError:false,
                 timeErrorMessage:'',
                 status:null,
             };
+            console.log(this.state.submit)
             this.handleDateChange = this.handleDateChange.bind(this);
             this.handleTimeChange = this.handleTimeChange.bind(this);
             this.handleSubmit = this.handleSubmit.bind(this);
@@ -51,7 +54,7 @@ export default class ModalUpdate extends Component{
     handleTimeChange(time) {
         this.setState({time : time});
     }
-    async handleSubmit(event){
+    handleSubmit(event){
         event.preventDefault();
         if(this.state.date === '')
         {
@@ -64,7 +67,7 @@ export default class ModalUpdate extends Component{
         else
         {
             const newData = {id : this.state.id,name:this.state.name,doctor:this.state.doctor,date : this.state.date,time : this.state.time.format('hh:mm a')}
-            console.log(newData)
+            this.state.submit(newData)
         }
     }
     render()
