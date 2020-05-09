@@ -9,7 +9,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -125,8 +124,8 @@ const EnhancedTableToolbar = (props) => {
     <Toolbar className={clsx(classes.root)}>
       {numSelected > 0 ? (
         <Grid container spacing={0}>
-            <Grid item xs ={10}>
-                <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+            <Grid item xs ={11}>
+                <Typography className={classes.title} variant="h3" id="tableTitle" component="div">
                     Appointments
                 </Typography>
             </Grid>
@@ -134,8 +133,6 @@ const EnhancedTableToolbar = (props) => {
                 <IconButton aria-label="delete" onClick={props.delete}>
                     <DeleteIcon/>
                 </IconButton>
-            </Grid>
-            <Grid item xs={1}>
                 <IconButton aria-label="delete" onClick={props.update}>
                     <EditIcon/>
                 </IconButton>
@@ -143,7 +140,7 @@ const EnhancedTableToolbar = (props) => {
         </Grid>
       ) : (<Grid container spacing={1} direction="row" alignItems="flex-end">
             <Grid item xs>
-                <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+                <Typography className={classes.title} variant="h3" id="tableTitle" component="div">
                     Appointments
                 </Typography>
             </Grid>
@@ -170,6 +167,8 @@ export default class EnhancedTable extends Component{
         this.setRowsPerPage = this.setRowsPerPage.bind(this)
         this.setEmptyRows = this.setEmptyRows.bind(this)
         this.handleRequestSort = this.handleRequestSort.bind(this)
+        this.isSelected = this.isSelected.bind(this)
+        this.handleClick = this.handleClick.bind(this)
     }
     setOrder = (o)=>{
         this.setState({order:o})
@@ -194,17 +193,27 @@ export default class EnhancedTable extends Component{
         this.setOrder(isAsc ? 'desc' : 'asc');
         this.setOrderBy(property);
     };
+    handleClick = (evt,name)=>{
+        if(name === this.state.selected)
+            this.setState({selected : ""})
+        else{
+            this.setState({selected:name})
+        }
+    }
     handleDelete = (event)=>{
         const temp = [...this.state.app]
         const i = temp.findIndex(e=>e.name === this.state.selected)
+        temp.splice(i,1)
         this.setState({app : temp})
-        alert('Deleted Successfully')
     }
     handleUpdate = (event)=>{
         const temp = [...this.state.app]
         const i = temp.findIndex(e=>e.name === this.state.selected)
         const obj = temp[i]
         console.log(obj)
+    }
+    isSelected = (name)=>{
+        return name === this.state.selected
     }
     render()
     {
@@ -214,11 +223,11 @@ export default class EnhancedTable extends Component{
                 <EnhancedTableToolbar numSelected={this.state.selected === "" ? 0:1} delete={this.handleDelete} update={this.handleUpdate}/>
                 <TableContainer>
                     <Table style={{minWidth : 750}} aria-labelledby="tableTitle" size={'medium'} aria-label="enhanced table">
-                        <EnhancedTableHead numSelected={this.state.selected === ""?0:1} order={this.state.order} orderBy={this.state.orderBy} onRequestSort={handleRequestSort} rowCount={data.length} />
+                        <EnhancedTableHead numSelected={this.state.selected === ""?0:1} order={this.state.order} orderBy={this.state.orderBy} onRequestSort={this.handleRequestSort} rowCount={this.state.app.length} />
                         <TableBody>
-                            {stableSort(this.state.app, getComparator(this.state.order, this.state.orderBy)).map((row, index) => {const isItemSelected = isSelected(row.name);const labelId = `enhanced-table-checkbox-${index}`;
+                            {stableSort(this.state.app, getComparator(this.state.order, this.state.orderBy)).map((row, index) => {const isItemSelected = this.isSelected(row.name);const labelId = `enhanced-table-checkbox-${index}`;
                                 return (
-                                    <TableRow hover onClick={(event) => handleClick(event, row.name)} role="checkbox" aria-checked={isItemSelected} tabIndex={-1} key={row.name} selected={isItemSelected} >
+                                    <TableRow hover onClick={(event) => this.handleClick(event, row.name)} role="checkbox" aria-checked={isItemSelected} tabIndex={-1} key={row.name} selected={isItemSelected} >
                                         <TableCell padding="checkbox"><Checkbox checked={isItemSelected} inputProps={{ 'aria-labelledby': labelId }} /></TableCell>
                                         <TableCell component="th" id={labelId} scope="row" padding="none">{row.id}</TableCell>
                                         <TableCell align="left">{row.name}</TableCell>
@@ -228,7 +237,6 @@ export default class EnhancedTable extends Component{
                                     </TableRow>
                                     );
                                 })}
-                            {emptyRows > 0 && (<TableRow style={{ height: (53) * emptyRows }}><TableCell colSpan={6} /></TableRow>)}
                         </TableBody>
                     </Table>
                 </TableContainer>
@@ -241,70 +249,70 @@ export default class EnhancedTable extends Component{
 
 const Appointments = [
     {
-        "Appointmentid": "6303001607",
+        "id": "6303001607",
         "name": "Erin White",
         "date": "03-07-2019",
         "time": "11:30 AM",
         "doctor": "Deborah Clements"
     },
     {
-        "Appointmentid": "3069447210",
+        "id": "3069447210",
         "name": "Naomi Rivas",
         "date": "16-11-2020",
         "time": "07:30 PM",
         "doctor": "Tamara Rivera"
     },
     {
-        "Appointmentid": "2296400716",
+        "id": "2296400716",
         "name": "Reed Mcgowan",
         "date": "17-11-2019",
         "time": "07:30 PM",
         "doctor": "Eugenia Eaton"
     },
     {
-        "Appointmentid": "1935204474",
+        "id": "1935204474",
         "name": "Jescie Potts",
         "date": "23-03-2021",
         "time": "07:30 PM",
         "doctor": "Hadley Morrow"
     },
     {
-        "Appointmentid": "6620700434",
+        "id": "6620700434",
         "name": "Cullen Wilkerson",
         "date": "27-03-2020",
         "time": "07:30 PM",
         "doctor": "Jaquelyn Santos"
     },
     {
-        "Appointmentid": "1693202676",
+        "id": "1693202676",
         "name": "Hoyt Beck",
         "date": "20-09-2020",
         "time": "11:30 AM",
         "doctor": "Rosalyn Francis"
     },
     {
-        "Appointmentid": "7992690895",
+        "id": "7992690895",
         "name": "Kristen William",
         "date": "30-03-2020",
         "time": "11:30 AM",
         "doctor": "Rowan Riggs"
     },
     {
-        "Appointmentid": "4874968261",
+        "id": "4874968261",
         "name": "Illana Dejesus",
         "date": "05-03-2021",
         "time": "07:30 PM",
         "doctor": "Imelda Mooney"
     },
     {
-        "Appointmentid": "9244263715",
+        "id": "9244263715",
         "name": "Beau Knox",
         "date": "09-05-2019",
         "time": "07:30 PM",
         "doctor": "Lacy Morales"
     },
     {
-        "Appointmentid": "2253177407",
+        "id": "2253177407",
         "name": "Devin Ayala",
         "date": "28-12-2019",
         "time": "07:30 PM",
