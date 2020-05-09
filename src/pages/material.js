@@ -17,6 +17,10 @@ import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import IconButton from '@material-ui/core/IconButton'
 import DeleteIcon from '@material-ui/icons/Delete';
+import Modal from '@material-ui/core/Modal';
+import Backdrop from '@material-ui/core/Backdrop';
+import Fade from '@material-ui/core/Fade';
+import ModalUpdate from '../components/material-form'
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -159,7 +163,7 @@ export default class EnhancedTable extends Component{
     constructor(props)
     {
         super(props)
-        this.state = {app : Appointments,order:'asc',orderBy:'name',selected:"",page:0,rowsPerPage:5,emptyRows:0}  
+        this.state = {app : Appointments,order:'asc',orderBy:'name',selected:"",page:0,rowsPerPage:5,emptyRows:0,open:false}  
         this.setOrder = this.setOrder.bind(this)      
         this.setOrderBy = this.setOrderBy.bind(this)
         this.setSelected = this.setSelected.bind(this)
@@ -169,6 +173,14 @@ export default class EnhancedTable extends Component{
         this.handleRequestSort = this.handleRequestSort.bind(this)
         this.isSelected = this.isSelected.bind(this)
         this.handleClick = this.handleClick.bind(this)
+        this.handleOpen = this.handleOpen.bind(this)
+        this.handleClose = this.handleClose.bind(this)
+    }
+    handleOpen = ()=>{
+        this.setState({open : true})
+    }
+    handleClose = ()=>{
+        this.setState({open : false})
     }
     setOrder = (o)=>{
         this.setState({order:o})
@@ -220,7 +232,7 @@ export default class EnhancedTable extends Component{
         return(
             <div className="App">
             <Paper>
-                <EnhancedTableToolbar numSelected={this.state.selected === "" ? 0:1} delete={this.handleDelete} update={this.handleUpdate}/>
+                <EnhancedTableToolbar numSelected={this.state.selected === "" ? 0:1} delete={this.handleDelete} update={this.handleOpen}/>
                 <TableContainer>
                     <Table style={{minWidth : 750}} aria-labelledby="tableTitle" size={'medium'} aria-label="enhanced table">
                         <EnhancedTableHead numSelected={this.state.selected === ""?0:1} order={this.state.order} orderBy={this.state.orderBy} onRequestSort={this.handleRequestSort} rowCount={this.state.app.length} />
@@ -241,6 +253,13 @@ export default class EnhancedTable extends Component{
                     </Table>
                 </TableContainer>
             </Paper>
+            <Modal style={{display: 'flex',alignItems: 'center',justifyContent: 'center',}}aria-labelledby="transition-modal-title" aria-describedby="transition-modal-description" open={this.state.open} onClose={this.handleClose} closeAfterTransition BackdropComponent={Backdrop} BackdropProps={{ timeout: 500, }}>
+                <Fade in={this.state.open}>
+                <div style={{border: '2px solid #000', padding:10,boxShadow:"10px 10px 5px 0px rgba(0,0,0,0.75)",backgroundColor:"#ffffff"}}>
+                    <
+                </div>
+                </Fade>
+            </Modal>
         </div>
         )
     }
