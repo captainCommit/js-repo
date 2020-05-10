@@ -187,7 +187,8 @@ export default class EnhancedTable extends Component{
           alertType : null,
           alertMessage : null,
         }  
-        this.setOrder = this.setOrder.bind(this)    
+        this.setOrder = this.setOrder.bind(this)  
+        this.snackClose = this.snackClose.bind(this)  
         this.handleDelete = this.handleDelete.bind(this)
         this.handleUpdate = this.handleUpdate.bind(this)  
         this.setOrderBy = this.setOrderBy.bind(this)
@@ -202,6 +203,9 @@ export default class EnhancedTable extends Component{
         this.handleClose = this.handleClose.bind(this)
         this.handleOpenAdd = this.handleOpenAdd.bind(this)
         this.handleCloseAdd = this.handleCloseAdd.bind(this)
+    }
+    snackClose= ()=>{
+      this.setState({alert : false})
     }
     handleOpenAdd = ()=>{
       this.setState({openAdd : true})
@@ -324,8 +328,8 @@ export default class EnhancedTable extends Component{
                     <ModalUpdate name={this.state.selected} id={this.state.selectedObject ? this.state.selectedObject.id : null} doctor={this.state.selectedObject ? this.state.selectedObject.doctor : null} time={this.state.selectedObject ? this.state.selectedObject.time : null} date={this.state.selectedObject ? this.state.selectedObject.date : null} submit={this.handleUpdate}/>
                 </Fade>
             </Modal>
-            <Snackbar open={this.state.alert} autoHideDuration={2000}>
-            <Alert severity={this.state.alertType}>
+            <Snackbar open={this.state.alert} autoHideDuration={1000} onClose={this.snackClose}>
+            <Alert severity={this.state.alertType} onClose={this.snackClose}>
                 {this.state.alertMessage}
             </Alert>
           </Snackbar>
