@@ -143,10 +143,10 @@ const EnhancedTableToolbar = (props) => {
                 </Typography>
             </Grid>
             <Grid item xs={1}>
-                <IconButton aria-label="delete" onClick={props.delete}>
+                <IconButton title="Delete Record" aria-label="Delete" onClick={props.delete}>
                     <DeleteIcon/>
                 </IconButton>
-                <IconButton aria-label="delete" onClick={props.update}>
+                <IconButton title="Update Record" aria-label="Update" onClick={props.update}>
                     <EditIcon/>
                 </IconButton>
             </Grid>
@@ -314,7 +314,7 @@ export default class EnhancedTable extends Component{
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <Fab color="secondary" aria-label="add" style={{position : "fixed",bottom : 20,right:5}} onClick={this.handleOpenAdd}>
+                <Fab color="secondary" aria-label="add" title="Add Record" style={{position : "fixed",bottom : 20,right:5}} onClick={this.handleOpenAdd}>
                   <AddIcon />
                 </Fab>
             </Paper>
