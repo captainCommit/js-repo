@@ -21,11 +21,15 @@ import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import Fab from '@material-ui/core/Fab';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 import AddIcon from '@material-ui/icons/Add';
 import ModalUpdate from '../components/material-form';
 import ModalAdd from '../components/material-add';
 
-
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -168,8 +172,24 @@ export default class EnhancedTable extends Component{
     constructor(props)
     {
         super(props)
-        this.state = {app : Appointments,order:'asc',orderBy:'name',selected:"",page:0,rowsPerPage:5,emptyRows:0,open:false,openAdd:false,selectedObject : null}  
-        this.setOrder = this.setOrder.bind(this)      
+        this.state = {
+          app : Appointments,
+          order:'asc',
+          orderBy:'name',
+          selected:"",
+          page:0,
+          rowsPerPage:5,
+          emptyRows:0,
+          open:false,
+          openAdd:false,
+          selectedObject : null,
+          alert : false,
+          alertType : null,
+          alertMessage : null,
+        }  
+        this.setOrder = this.setOrder.bind(this)    
+        this.handleDelete = this.handleDelete.bind(this)
+        this.handleUpdate = this.handleUpdate.bind(this)  
         this.setOrderBy = this.setOrderBy.bind(this)
         this.setSelected = this.setSelected.bind(this)
         this.setPage = this.setPage.bind(this)
@@ -227,11 +247,18 @@ export default class EnhancedTable extends Component{
             this.setState({selected:name,selectedObject : obj})
         }
     }
+    handleAdd = (newData)=>{
+      const temp = [...this.state.app]
+      temp.push(newData)
+      this.setState({app : temp,open:false})
+      alert('Insertion Successful')
+    }
     handleDelete = (event)=>{
         const temp = [...this.state.app]
         const i = temp.findIndex(e=>e.name === this.state.selected)
         temp.splice(i,1)
-        this.setState({app : temp,selected:""})
+        this.setState({app : temp,selected:"",open:false})
+        alert('Delete Successful')
     }
     handleUpdate = (newData)=>{
         const temp = [...this.state.app]
@@ -243,7 +270,8 @@ export default class EnhancedTable extends Component{
         }
         console.log(newData,i)
         temp[i] = newData
-        this.setState({app : temp})
+        this.setState({app : temp,open:false})
+        alert('Update Successful')
     }
     isSelected = (name)=>{
         return name === this.state.selected
@@ -279,7 +307,7 @@ export default class EnhancedTable extends Component{
             </Paper>
             <Modal style={{display: 'flex',alignItems: 'center',justifyContent: 'center',}}aria-labelledby="transition-modal-title" aria-describedby="transition-modal-description" open={this.state.openAdd} onClose={this.handleCloseAdd} closeAfterTransition BackdropComponent={Backdrop} BackdropProps={{ timeout: 500, }}>
                 <Fade in={this.state.openAdd}>
-                    <ModalAdd/>
+                    <ModalAdd submit={this.handleAdd}/>
                 </Fade>
             </Modal>
             <Modal style={{display: 'flex',alignItems: 'center',justifyContent: 'center',}}aria-labelledby="transition-modal-title" aria-describedby="transition-modal-description" open={this.state.open} onClose={this.handleClose} closeAfterTransition BackdropComponent={Backdrop} BackdropProps={{ timeout: 500, }}>
@@ -287,6 +315,11 @@ export default class EnhancedTable extends Component{
                     <ModalUpdate name={this.state.selected} id={this.state.selectedObject ? this.state.selectedObject.id : null} doctor={this.state.selectedObject ? this.state.selectedObject.doctor : null} time={this.state.selectedObject ? this.state.selectedObject.time : null} date={this.state.selectedObject ? this.state.selectedObject.date : null} submit={this.handleUpdate}/>
                 </Fade>
             </Modal>
+            <Snackbar open={true} autoHideDuration={6000}>
+            <Alert severity="success">
+              This is a success message!
+            </Alert>
+          </Snackbar>
         </div>
         )
     }

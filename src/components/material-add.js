@@ -10,16 +10,23 @@ import Paper from '@material-ui/core/Paper';
 import moment from 'moment'
 import {MuiPickersUtilsProvider,KeyboardTimePicker,KeyboardDatePicker} from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
-
 const theme = createMuiTheme({
     spacing: 4,
 });
+function makeid(length) {
+    var result           = '';
+    var characters       = '0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+       result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+ }
 export default class ModalAdd extends Component{
     constructor(props)
     {
         super(props);
         this.state = {
-                id : '',
                 submit : props.submit,
                 name : '',
                 nameError : false,
@@ -41,11 +48,11 @@ export default class ModalAdd extends Component{
             this.handleTimeChange = this.handleTimeChange.bind(this);
             this.handleSubmit = this.handleSubmit.bind(this);
     }
-    handleNameChange(n){
-        this.setState({name : n})
+    handleNameChange(e){
+        this.setState({name : e.target.value})
     }
     handleDoctorChange(d){
-        this.setState({doctor : d})
+        this.setState({doctor : d.target.value})
     }
     handleDateChange(date) {
         this.setState({date : date});
@@ -73,9 +80,9 @@ export default class ModalAdd extends Component{
         }
         else
         {
-            const newData = {id : this.state.id,name:this.state.name,doctor:this.state.doctor,date : this.state.date.format('DD-MM-YYYY'),time : this.state.time.format('hh:mm a')}
+            const newData = {id : makeid(10),name:this.state.name,doctor:this.state.doctor,date : this.state.date.format('DD-MM-YYYY'),time : this.state.time.format('hh:mm a')}
             console.log(newData)
-            //this.state.submit(newData)
+            this.state.submit(newData)
         }
     }
     render()
@@ -104,13 +111,13 @@ export default class ModalAdd extends Component{
                                 </Grid>
                                 <Grid item xs={6}>
                                     <MuiPickersUtilsProvider utils={MomentUtils}>
-                                        <KeyboardDatePicker disableToolbar format="DD-MM-yyyy" variant="outlined" margin="none" id="date-picker" label="Date Of Appointment" value={this.state.date} onChange={this.handleDateChange} KeyboardButtonProps={{     'aria-label': 'change date', }} />
+                                        <KeyboardDatePicker disableToolbar format="DD-MM-yyyy" variant="outlined" margin="none" id="date-picker" label="Date Of Appointment" value={this.state.date} onChange={this.handleDateChange} KeyboardButtonProps={{'aria-label': 'change date', }} minDate={new Date()}/>
                                     </MuiPickersUtilsProvider>
                                     {/*<TextField error={this.state.dateError} data-testid="=date" required label="Date" variant="outlined" fullWidth style={{marginBottom: 20,marginRight:20}} value={this.state.date} helperText={this.state.dateErrorMessage} onChange={this.handleDateChange}/ > */}
                                 </Grid>
                                 <Grid item xs={6}>
                                     <MuiPickersUtilsProvider utils={MomentUtils}>
-                                    <KeyboardTimePicker margin="none" id="time-picker" variant="outlined" label="Time Of Appointment" value={this.state.time} onChange={this.handleTimeChange} KeyboardButtonProps={{   'aria-label': 'change time', }}/>
+                                        <KeyboardTimePicker margin="none" id="time-picker" variant="outlined" label="Time Of Appointment" value={this.state.time} onChange={this.handleTimeChange} KeyboardButtonProps={{   'aria-label': 'change time', }} />
                                     </MuiPickersUtilsProvider>
                                     {/*<TextField error={this.state.timeError} data-testid="time" required label="Time"  fullWidth style={{marginBottom: 20}} autoComplete="current-date" value={this.state.time} helperText={this.state.timeErrorMessage} variant="outlined" onChange={this.handleTimeChange}/>*/}
                                 </Grid>
