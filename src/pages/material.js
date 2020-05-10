@@ -152,7 +152,7 @@ const EnhancedTableToolbar = (props) => {
             </Grid>
         </Grid>
       ) : (<Grid container spacing={1} direction="row" alignItems="flex-end">
-            <Grid item xs>
+            <Grid item xs={11}>
                 <Typography className={classes.title} variant="h3" id="tableTitle" component="div">
                     Appointments
                 </Typography>
