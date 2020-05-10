@@ -165,7 +165,7 @@ export default class EnhancedTable extends Component{
     constructor(props)
     {
         super(props)
-        this.state = {app : Appointments,order:'asc',orderBy:'name',selected:"",page:0,rowsPerPage:5,emptyRows:0,open:false,selectedObject : null}  
+        this.state = {app : Appointments,order:'asc',orderBy:'name',selected:"",page:0,rowsPerPage:5,emptyRows:0,open:false,openAdd:false,selectedObject : null}  
         this.setOrder = this.setOrder.bind(this)      
         this.setOrderBy = this.setOrderBy.bind(this)
         this.setSelected = this.setSelected.bind(this)
@@ -177,6 +177,14 @@ export default class EnhancedTable extends Component{
         this.handleClick = this.handleClick.bind(this)
         this.handleOpen = this.handleOpen.bind(this)
         this.handleClose = this.handleClose.bind(this)
+        this.handleOpenAdd = this.handleOpenAdd.bind(this)
+        this.handleCloseAdd = this.handleCloseAdd.bind(this)
+    }
+    handleOpenAdd = ()=>{
+      this.setState({openAdd : true})
+    }
+    handleCloseAdd = ()=>{
+      this.setState({openAdd : false})
     }
     handleOpen = ()=>{
         this.setState({open : true})
@@ -262,7 +270,7 @@ export default class EnhancedTable extends Component{
                         </TableBody>
                     </Table>
                 </TableContainer>
-                <Fab color="secondary" aria-label="add" style={{position : "fixed",bottom : 20,right:5}}>
+                <Fab color="secondary" aria-label="add" style={{position : "fixed",bottom : 20,right:5}} onClick={this.handleOpenAdd}>
                   <AddIcon />
                 </Fab>
             </Paper>
