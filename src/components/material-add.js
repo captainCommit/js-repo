@@ -1,7 +1,7 @@
 import React,{Component} from 'react'
 import TextField from '@material-ui/core/TextField';
 import {createMuiTheme} from '@material-ui/core/styles'
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import Typography from '@material-ui/core/Typography';
 import Alert from '@material-ui/lab/Alert';
 import Grid from '@material-ui/core/Grid';
@@ -55,18 +55,27 @@ export default class ModalAdd extends Component{
     }
     handleSubmit(event){
         event.preventDefault();
-        if(this.state.date === '')
+        if(this.state.name === '')
         {
-            this.setState({dateError : true,dateErrorMessage : "Date cannot be empty",status:null})
+            this.setState({nameError : true,nameErrorMessage : "Name of patient cannot be empty"})
+        }
+        else if(this.state.doctor === '')
+        {
+            this.setState({nameError : false,nameErrorMessage : "",doctorError:true,doctorErrorMessage:"Name of doctor cannot be empty"})
+        }
+        else if(this.state.date === '')
+        {
+            this.setState({nameError : false,nameErrorMessage : "",doctorError:false,doctorErrorMessage:"",dateError : true,dateErrorMessage : "Date cannot be empty"})
         }
         else if(this.state.time === '')
         {
-            this.setState({dateError : false,timeError : true,timeErrorMessage : "Time cannot be empty",status:null})
+            this.setState({nameError : false,nameErrorMessage : "",doctorError:false,doctorErrorMessage:"",dateError : false,dateErrorMessage:"",timeError : true,timeErrorMessage : "Time cannot be empty"})
         }
         else
         {
             const newData = {id : this.state.id,name:this.state.name,doctor:this.state.doctor,date : this.state.date.format('DD-MM-YYYY'),time : this.state.time.format('hh:mm a')}
-            this.state.submit(newData)
+            console.log(newData)
+            //this.state.submit(newData)
         }
     }
     render()
@@ -88,28 +97,25 @@ export default class ModalAdd extends Component{
                             <Typography variant="h4" gutterBottom style={{marginBottom:30}}>Add Appointment</Typography>
                             <Grid container spacing = {2}>
                                 <Grid items xs = {6}>
-                                    <TextField error={this.state.nameError} label="Name" variant="outlined" fullWidth style={{marginRight:20,marginTop:10}} value={this.state.name} onChange={this.handleNameChange} helperText={this.state.nameErrorMessage}/>
+                                    <TextField error={this.state.nameError} label="Name of Patient" variant="outlined" fullWidth style={{marginRight:20,marginTop:10}} value={this.state.name} onChange={this.handleNameChange} helperText={this.state.nameErrorMessage}/>
                                 </Grid>
                                 <Grid item xs = {6}>
-                                    <TextField error={this.state.doctorError} label="Doctor" variant="outlined" fullWidth style={{marginBottom: 20,marginRight:20}} value={this.state.doctor} onChange={this.handleDoctorChange} helperText={this.state.doctorErrorMessage}/>
+                                    <TextField error={this.state.doctorError} label="Name of Doctor" variant="outlined" fullWidth style={{marginBottom: 20,marginRight:20}} value={this.state.doctor} onChange={this.handleDoctorChange} helperText={this.state.doctorErrorMessage}/>
                                 </Grid>
                                 <Grid item xs={6}>
                                     <MuiPickersUtilsProvider utils={MomentUtils}>
-                                        <KeyboardDatePicker disableToolbar format="DD-MM-yyyy" margin="none" id="date-picker" label="Date picker" value={this.state.date} onChange={this.handleDateChange} KeyboardButtonProps={{     'aria-label': 'change date', }} />
+                                        <KeyboardDatePicker disableToolbar format="DD-MM-yyyy" variant="outlined" margin="none" id="date-picker" label="Date Of Appointment" value={this.state.date} onChange={this.handleDateChange} KeyboardButtonProps={{     'aria-label': 'change date', }} />
                                     </MuiPickersUtilsProvider>
                                     {/*<TextField error={this.state.dateError} data-testid="=date" required label="Date" variant="outlined" fullWidth style={{marginBottom: 20,marginRight:20}} value={this.state.date} helperText={this.state.dateErrorMessage} onChange={this.handleDateChange}/ > */}
                                 </Grid>
                                 <Grid item xs={6}>
                                     <MuiPickersUtilsProvider utils={MomentUtils}>
-                                    <KeyboardTimePicker margin="none" id="time-picker" label="Time" value={this.state.time} onChange={this.handleTimeChange} KeyboardButtonProps={{   'aria-label': 'change time', }}/>
+                                    <KeyboardTimePicker margin="none" id="time-picker" variant="outlined" label="Time Of Appointment" value={this.state.time} onChange={this.handleTimeChange} KeyboardButtonProps={{   'aria-label': 'change time', }}/>
                                     </MuiPickersUtilsProvider>
                                     {/*<TextField error={this.state.timeError} data-testid="time" required label="Time"  fullWidth style={{marginBottom: 20}} autoComplete="current-date" value={this.state.time} helperText={this.state.timeErrorMessage} variant="outlined" onChange={this.handleTimeChange}/>*/}
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Button data-testid="submitbutton" variant="contained" size="large" startIcon={<CloudUploadIcon/>} color="primary" onClick={this.handleSubmit}>Update Appointment</Button>
-                                </Grid>
-                                <Grid item xs>
-                                    {this.state.status === null?null:this.state.status === false ? <Alert severity="error" style={{marginTop:10}}>Unsuccessful Update</Alert>: <Alert severity="success" style={{marginTop:10}}>Update Successful</Alert> }
+                                    <Button data-testid="submitbutton" variant="contained" size="large" startIcon={<PersonAddIcon/>} color="primary" onClick={this.handleSubmit}>Add Appointment</Button>
                                 </Grid>
                             </Grid>
                         </form>

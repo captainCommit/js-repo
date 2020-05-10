@@ -22,7 +22,10 @@ import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import ModalUpdate from '../components/material-form'
+import ModalUpdate from '../components/material-form';
+import ModalAdd from '../components/material-add';
+
+
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -274,6 +277,11 @@ export default class EnhancedTable extends Component{
                   <AddIcon />
                 </Fab>
             </Paper>
+            <Modal style={{display: 'flex',alignItems: 'center',justifyContent: 'center',}}aria-labelledby="transition-modal-title" aria-describedby="transition-modal-description" open={this.state.openAdd} onClose={this.handleCloseAdd} closeAfterTransition BackdropComponent={Backdrop} BackdropProps={{ timeout: 500, }}>
+                <Fade in={this.state.openAdd}>
+                    <ModalAdd/>
+                </Fade>
+            </Modal>
             <Modal style={{display: 'flex',alignItems: 'center',justifyContent: 'center',}}aria-labelledby="transition-modal-title" aria-describedby="transition-modal-description" open={this.state.open} onClose={this.handleClose} closeAfterTransition BackdropComponent={Backdrop} BackdropProps={{ timeout: 500, }}>
                 <Fade in={this.state.open}>
                     <ModalUpdate name={this.state.selected} id={this.state.selectedObject ? this.state.selectedObject.id : null} doctor={this.state.selectedObject ? this.state.selectedObject.doctor : null} time={this.state.selectedObject ? this.state.selectedObject.time : null} date={this.state.selectedObject ? this.state.selectedObject.date : null} submit={this.handleUpdate}/>
