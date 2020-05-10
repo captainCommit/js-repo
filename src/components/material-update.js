@@ -23,7 +23,7 @@ export default class ModalUpdate extends Component{
                 name : props.name,
                 doctor : props.doctor,
                 submit : props.submit,
-                date:moment(new Date(props.date+" "+props.time)),
+                date:moment(props.date+" "+props.time),
                 dateError: false,
                 dateErrorMessage:'',
                 time: moment(new Date(props.date+" "+props.time)),
@@ -88,7 +88,7 @@ export default class ModalUpdate extends Component{
                                 </Grid>
                                 <Grid item xs={6}>
                                     <MuiPickersUtilsProvider utils={MomentUtils}>
-                                        <KeyboardDatePicker disableToolbar format="DD-MM-yyyy" margin="none" id="date-picker" label="Date picker" value={this.state.date} onChange={this.handleDateChange} KeyboardButtonProps={{     'aria-label': 'change date', }} />
+                                        <KeyboardDatePicker disableToolbar format="DD-MM-yyyy" margin="none" id="date-picker" label="Date picker" value={this.state.date} onChange={this.handleDateChange} KeyboardButtonProps={{ 'aria-label': 'change date', }} minDate={new Date(this.state.date+" "+this.state.time)}/>
                                     </MuiPickersUtilsProvider>
                                     {/*<TextField error={this.state.dateError} data-testid="=date" required label="Date" variant="outlined" fullWidth style={{marginBottom: 20,marginRight:20}} value={this.state.date} helperText={this.state.dateErrorMessage} onChange={this.handleDateChange}/ > */}
                                 </Grid>

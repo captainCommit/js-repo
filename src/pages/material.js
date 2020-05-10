@@ -24,7 +24,7 @@ import Fab from '@material-ui/core/Fab';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import AddIcon from '@material-ui/icons/Add';
-import ModalUpdate from '../components/material-form';
+import ModalUpdate from '../components/material-update';
 import ModalAdd from '../components/material-add';
 
 function Alert(props) {
@@ -284,7 +284,7 @@ export default class EnhancedTable extends Component{
         temp[i] = newData
         this.setState({app : temp,open:false})
         //alert('Update Successful')
-        this.setState({alert:true,alertType:"success",alertMessage:"Appointment updated successfully"})
+        this.setState({alert:true,alertType:"success",alertMessage:"Appointment updated successfully",selected:""})
     }
     isSelected = (name)=>{
         return name === this.state.selected
@@ -340,116 +340,74 @@ export default class EnhancedTable extends Component{
 
 
 const Appointments = [
-    {
-        "id": "6303001607",
-        "name": "Erin White",
-        "date": "03-07-2019",
-        "time": "11:30 AM",
-        "doctor": "Deborah Clements"
-    },
-    {
-        "id": "3069447210",
-        "name": "Naomi Rivas",
-        "date": "11-21-2020",
-        "time": "07:30 PM",
-        "doctor": "Tamara Rivera"
-    },
-    {
-        "id": "2296400716",
-        "name": "Reed Mcgowan",
-        "date": "10-19-2019",
-        "time": "07:30 PM",
-        "doctor": "Eugenia Eaton"
-    },
-    {
-        "id": "1935204474",
-        "name": "Jescie Potts",
-        "date": "03-23-2021",
-        "time": "07:30 PM",
-        "doctor": "Hadley Morrow"
-    },
-    {
-        "id": "6620700434",
-        "name": "Cullen Wilkerson",
-        "date": "07-23-2020",
-        "time": "07:30 PM",
-        "doctor": "Jaquelyn Santos"
-    },
-    {
-        "id": "1693202676",
-        "name": "Hoyt Beck",
-        "date": "20-09-2020",
-        "time": "11:30 AM",
-        "doctor": "Rosalyn Francis"
-    },
-    {
-        "id": "7992690895",
-        "name": "Kristen William",
-        "date": "10-23-2020",
-        "time": "11:30 AM",
-        "doctor": "Rowan Riggs"
-    },
-    {
-        "id": "4874968261",
-        "name": "Illana Dejesus",
-        "date": "05-13-2021",
-        "time": "07:30 PM",
-        "doctor": "Imelda Mooney"
-    },
-    {
-        "id": "9244263715",
-        "name": "Beau Knox",
-        "date": "09-15-2019",
-        "time": "07:30 PM",
-        "doctor": "Lacy Morales"
-    },
-    {
-        "id": "2253177407",
-        "name": "Devin Ayala",
-        "date": "08-20-2019",
-        "time": "07:30 PM",
-        "doctor": "Abel Strong"
-    },
-    {
-      "id": "7962799797",
-      "name": "Aristotle Snyder",
-      "date": "29-07-2019",
-      "time": "11:30 AM",
-      "doctor": "Wade Sandoval"
-    },
-    {
-      "id": "6848505587",
-      "name": "Ray Diaz",
-      "date": "12-12-2020",
-      "time": "07:30 PM",
-      "doctor": "Davis Hartman"
-    },
-    {
-      "id": "7253188593",
-      "name": "Adara Hinton",
-      "date": "12-05-2019",
-      "time": "11:30 AM",
-      "doctor": "Caleb Kirkland"
-    },
-    {
-      "id": "8676547602",
-      "name": "Rafael Vargas",
-      "date": "10-12-2020",
-      "time": "07:30 PM",
-      "doctor": "Hall Russell"
-    },
-    {
-      "id": "4554097288",
-      "name": "Addison Shelton",
-      "date": "07-02-2021",
-      "time": "11:30 AM",
-      "doctor": "Paki Mcdowell"
-    },
-    {
-      "id": "5612272406",
-      "name": "Allen Pacheco",
-      "date": "01-04-2021",
-      "time": "07:30 PM",
-      "doctor": "Gavin Burns"
-    }
+	{
+		"id": "3962397456",
+		"name": "Kirsten Swanson",
+		"date": "03-21-2021",
+		"time" : "4:53 pm",
+		"doctor": "Britanni Christensen"
+	},
+	{
+		"id": "3530044350",
+		"name": "Stephen Mccray",
+		"date": "10-27-2020",
+		"time" : "11:25 am",
+		"doctor": "Emmanuel Foreman"
+	},
+	{
+		"id": "0399573804",
+		"name": "Sacha Underwood",
+		"date": "05-15-2020",
+		"time" : "11:25 am",
+		"doctor": "Silas Griffin"
+	},
+	{
+		"id": "1048009943",
+		"name": "Bryar Kelley",
+		"date": "01-15-2021",
+		"time" : "4:53 pm",
+		"doctor": "Scott Sweet"
+	},
+	{
+		"id": "4906640289",
+		"name": "Skyler Sims",
+		"date": "02-27-2021",
+		"time" : "11:25 am",
+		"doctor": "Oprah Santos"
+	},
+	{
+		"id": "7547387658",
+		"name": "Norman Vincent",
+		"date": "12-27-2020",
+		"time" : "11:25 am",
+		"doctor": "Andrew Castillo"
+	},
+	{
+		"id": "7754883021",
+		"name": "Aristotle Byers",
+		"date": "04-18-2021",
+		"time" : "4:53 pm",
+		"doctor": "Kameko Keith"
+	},
+	{
+		"id": "9731164554",
+		"name": "Jana Salinas",
+		"date": "01-28-2021",
+		"time" : "4:53 pm",
+		"doctor": "Murphy Greene"
+	},
+	{
+		"id": "6266975152",
+		"name": "Emily Moss",
+		"date": "07-14-2020",
+		"time" : "11:25 am",
+		"doctor": "Charissa Sykes"
+	},
+	{
+		"id": "4127300361",
+		"name": "Austin Savage",
+		"date": "09-06-2020",
+		"time" : "11:25 am",
+		"doctor": "Colorado Gamble"
+  }
 ]
