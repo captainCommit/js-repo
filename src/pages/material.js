@@ -250,28 +250,37 @@ export default class EnhancedTable extends Component{
     handleAdd = (newData)=>{
       const temp = [...this.state.app]
       temp.push(newData)
-      this.setState({app : temp,open:false})
-      alert('Insertion Successful')
+      this.setState({app : temp,openAdd:false})
+      //alert('Insertion Successful')
+      this.setState({alert:true,alertType:"success",alertMessage:"Appointment added successfully"})
     }
     handleDelete = (event)=>{
         const temp = [...this.state.app]
         const i = temp.findIndex(e=>e.name === this.state.selected)
+        if(i== -1)
+        {
+          this.setState({alert:true,alertType:"danger",alertMessage:"Appointment Not Found"})
+          return
+        }
         temp.splice(i,1)
         this.setState({app : temp,selected:"",open:false})
-        alert('Delete Successful')
+        //alert('Delete Successful')
+        this.setState({alert:true,alertType:"success",alertMessage:"Appointment removed successfully"})
     }
     handleUpdate = (newData)=>{
         const temp = [...this.state.app]
         const i = temp.findIndex(e=>e.name === this.state.selected)
         if(i == -1)
         {
-          alert("Record Not Found")
+          //alert("Record Not Found")
+          this.setState({alert:true,alertType:"danger",alertMessage:"Appointment Not Found"})
           this.setState({open:false})
         }
         console.log(newData,i)
         temp[i] = newData
         this.setState({app : temp,open:false})
-        alert('Update Successful')
+        //alert('Update Successful')
+        this.setState({alert:true,alertType:"success",alertMessage:"Appointment updated successfully"})
     }
     isSelected = (name)=>{
         return name === this.state.selected
@@ -315,9 +324,9 @@ export default class EnhancedTable extends Component{
                     <ModalUpdate name={this.state.selected} id={this.state.selectedObject ? this.state.selectedObject.id : null} doctor={this.state.selectedObject ? this.state.selectedObject.doctor : null} time={this.state.selectedObject ? this.state.selectedObject.time : null} date={this.state.selectedObject ? this.state.selectedObject.date : null} submit={this.handleUpdate}/>
                 </Fade>
             </Modal>
-            <Snackbar open={true} autoHideDuration={6000}>
-            <Alert severity="success">
-              This is a success message!
+            <Snackbar open={this.state.alert} autoHideDuration={2000}>
+            <Alert severity={this.state.alertType}>
+                {this.state.alertMessage}
             </Alert>
           </Snackbar>
         </div>
