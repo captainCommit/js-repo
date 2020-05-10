@@ -20,7 +20,6 @@ export default class ModalUpdate extends Component{
         super(props);
         this.state = {
                 id : props.id,
-                submit : props.submit,
                 name : props.name,
                 doctor : props.doctor,
                 submit : props.submit,

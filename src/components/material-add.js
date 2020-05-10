@@ -3,7 +3,6 @@ import TextField from '@material-ui/core/TextField';
 import {createMuiTheme} from '@material-ui/core/styles'
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import Typography from '@material-ui/core/Typography';
-import Alert from '@material-ui/lab/Alert';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';

@@ -66,7 +66,7 @@ const headCells = [
 ];
 
 function EnhancedTableHead(props) {
-  const { classes, order, orderBy, onRequestSort } = props;
+  const {order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -261,7 +261,7 @@ export default class EnhancedTable extends Component{
     handleDelete = (event)=>{
         const temp = [...this.state.app]
         const i = temp.findIndex(e=>e.name === this.state.selected)
-        if(i== -1)
+        if(i === -1)
         {
           this.setState({alert:true,alertType:"danger",alertMessage:"Appointment Not Found"})
           return
@@ -274,7 +274,7 @@ export default class EnhancedTable extends Component{
     handleUpdate = (newData)=>{
         const temp = [...this.state.app]
         const i = temp.findIndex(e=>e.name === this.state.selected)
-        if(i == -1)
+        if(i === -1)
         {
           //alert("Record Not Found")
           this.setState({alert:true,alertType:"danger",alertMessage:"Appointment Not Found"})
