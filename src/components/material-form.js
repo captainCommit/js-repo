@@ -10,7 +10,15 @@ import Paper from '@material-ui/core/Paper';
 import moment from 'moment'
 import {MuiPickersUtilsProvider,KeyboardTimePicker,KeyboardDatePicker} from '@material-ui/pickers';
 import MomentUtils from '@date-io/moment';
-
+function makeid(length) {
+    var result           = '';
+    var characters       = '0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+       result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+ }
 const theme = createMuiTheme({
     spacing: 4,
 });
@@ -19,27 +27,34 @@ export default class ModalUpdate extends Component{
     {
         super(props);
         this.state = {
-                id : props.id,
-                name : props.name,
+                type : props.type,
+                id : props.id ? props.id : makeid(10),
+                name : props.name ? props.name : '',
                 nameError : false,
                 nameErrorMessage : '',
-                doctor : props.doctor,
+                doctor : props.doctor ? props.doctor : '',
                 doctorError : false,
                 doctorErrorMessage : false,
-                date:moment(props.date+" "+props.time),
+                date:(props.date && props.time) ? moment(new Date(props.date+" "+props.time)):moment(new Date()),
                 dateError: false,
                 dateErrorMessage:'',
-                time: moment(new Date(props.date+" "+props.time)),
-                aTime : props.time,
+                time:(props.date && props.time) ? moment(new Date(props.date+" "+props.time)):moment(new Date()),
                 timeError:false,
                 timeErrorMessage:'',
                 submit : props.submit,
                 status:null,
             };
-            console.log(this.state.submit)
+            this.handleNameChange = this.handleNameChange.bind(this);
+            this.handleDoctorChange = this.handleDoctorChange.bind(this);
             this.handleDateChange = this.handleDateChange.bind(this);
             this.handleTimeChange = this.handleTimeChange.bind(this);
             this.handleSubmit = this.handleSubmit.bind(this);
+    }
+    handleNameChange(e){
+        this.setState({name : e.target.value})
+    }
+    handleDoctorChange(d){
+        this.setState({doctor : d.target.value})
     }
     handleDateChange(date) {
         this.setState({date : date});
@@ -79,16 +94,16 @@ export default class ModalUpdate extends Component{
         return(
                     <Paper style={classes.paper} elevation={5} >
                         <form  data-testid="submitform" style={classes.root} noValidate autoComplete="off">
-                            <Typography variant="h4" gutterBottom style={{marginBottom:30}}>Update Appointments</Typography>
+                            <Typography variant="h4" gutterBottom style={{marginBottom:30}}>{this.state.type == 'upd' ? "Update " : "Make "}Appointments</Typography>
                             <Grid container spacing = {2}>
                                 <Grid item xs = {4}>
                                     <TextField InputProps={{readOnly: true,}} label="ID" variant="outlined" fullWidth style={{marginBottom: 20,marginRight:20}} defaultValue={this.state.id}/>
                                 </Grid>
                                 <Grid items xs = {4}>
-                                    <TextField InputProps={{readOnly: true,}} label="Name" variant="outlined" fullWidth style={{marginRight:20,marginTop:10}} defaultValue={this.state.name}/>
+                                    <TextField InputProps={this.state.type=== "upd" ?{readOnly: true,}:{readOnly: true,}} label="Name" variant="outlined" fullWidth style={{marginRight:20,marginTop:10}} defaultValue={this.state.name}/>
                                 </Grid>
                                 <Grid item xs = {4}>
-                                    <TextField InputProps={{readOnly: true,}} label="Doctor" variant="outlined" fullWidth style={{marginBottom: 20,marginRight:20}} defaultValue={this.state.doctor}/>
+                                    <TextField InputProps={this.state.type=== "upd" ?{readOnly: true,}:{readOnly: true,}} label="Doctor" variant="outlined" fullWidth style={{marginBottom: 20,marginRight:20}} defaultValue={this.state.doctor}/>
                                 </Grid>
                                 <Grid item xs={6}>
                                     <MuiPickersUtilsProvider utils={MomentUtils}>
